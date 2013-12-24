@@ -1,0 +1,15 @@
+.ui-notify { width:300px; position:fixed; top:130px; right:8px;  border-radius:3px; clear:both; }
+.ui-notify-message { padding:5px 8px 10px 7px; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px }
+.ui-notify-message h1 { font: 12px Tahoma; font-weight:bold; margin:2px 0 0 0; padding:0 }
+.ui-notify-message p { font: 12px Tahoma; padding:15px 0 0 0; }
+.ui-notify-message:last-child { margin-bottom:0 }
+.ui-notify-message-style { margin-bottom: 10px; background:rgba(226,231,238,0.9);box-shadow: 0 0 8px #DAE0E9, 0 0 20px #D1DAE4 inset; border: 1px #9CAAC8 solid; }
+.ui-notify-message-style h1 { color: #214460;  }
+.ui-notify-message-style p { margin:0; color: #214460; }
+.ui-notify-message-style p span.left{ float: left; color:#000; }
+.ui-notify-message-style p span.right{ float: right; margin-right: 3px; color:#D20000; font-weight:bold; }
+.ui-notify-close { color:#214460; font: 14px Verdana; text-decoration: none; text-shadow: none; }
+.ui-notify-click { cursor:pointer }
+.ui-notify-cross { margin-top:-4px; float:right; cursor:pointer; text-decoration:none; font-weight:bold; padding:2px }
+.ui-notify-cross:hover { color:#BACDD6 }
+.ui-notify-cross:active { position:relative; top:1px }
