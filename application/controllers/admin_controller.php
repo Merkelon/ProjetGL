@@ -129,9 +129,9 @@ class admin_controller extends CI_Controller {
                     }
                     else
                         $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
-                        $res['content'] = $this->load->view("Admin/form_creer_entreprise", "", TRUE);
-                        $this->load->view("page", $res);                                            
-                  }
+                    $res['content'] = $this->load->view("Admin/form_creer_entreprise", "", TRUE);
+                    $this->load->view("page", $res);
+                }
                 else {
                     $datestring = "%Y-%m-%d %H:%i:%s";
                     $time = time();
@@ -378,10 +378,12 @@ class admin_controller extends CI_Controller {
         $result = $this->admin_model->verifier_email($email, $type_utilisateur);
         return $result;
     }
-    function liste_demandes_stage(){
+
+    function liste_demandes_stage() {
         $data['demandes'] = $this->admin_model->liste_demandes_stage();
         $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
         $res['content'] = $this->load->view("Admin/liste_demandes_stage", $data, TRUE);
         $this->load->view("page", $res);
     }
+
 }
