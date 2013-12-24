@@ -3,7 +3,13 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class admin_controller extends CI_Controller {
-
+    // kkkkk
+    
+    
+    // sszsasas
+    
+    
+    //kkk
     function __construct() {
         parent::__construct();
         $this->load->library(array('form_validation', 'session'));
