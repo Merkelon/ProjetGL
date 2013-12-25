@@ -1,21 +1,17 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class admin_controller extends CI_Controller {
-    // kkkkk
-    
-    
-    // sszsasas
-    
-    
-    //kkk
+
     function __construct() {
         parent::__construct();
         $this->load->library(array('form_validation', 'session'));
         $this->load->helper(array('url', 'form', 'date'));
         $this->load->model("admin_model", "", TRUE);
         $this->_salt = "123456789987654321";
+        
     }
 
     function index() {
@@ -248,6 +244,7 @@ class admin_controller extends CI_Controller {
                 $this->_cne = $this->input->post('cne');
                 $this->_email = $this->input->post('email');
                 $this->_apogee = $this->input->post('apogee');
+                $this->_ajax = $this->input->post('ajax');
                 // reste à verifier les champs à valeurs unique              
 
                 if ($this->form_validation->run('modifier_etudiant') == FALSE) {
@@ -271,14 +268,14 @@ class admin_controller extends CI_Controller {
                         'cin' => $this->_cin,
                         'cne' => $this->_cne,
                         'id' => $this->_id);
-
-                    $result = $this->admin_model->modifier_utilisateur($data_utilisateur, 'etudiant');
-                    if ($result == TRUE)
+                    try {
+                        $result = $this->admin_model->modifier_utilisateur($data_utilisateur, 'etudiant');
                         $data['message'] = "0";
-                    else
+                    } catch (Exception $ex) {
                         $data['message'] = "-1";
+                        $data['error'] = $ex->getMessage();
+                    }
                     return $this->output->set_output(json_encode($data));
-                    ;
                 }
                 break;
             case 'entreprise' :
@@ -289,7 +286,7 @@ class admin_controller extends CI_Controller {
                 $this->_fax = $this->input->post('fax');
                 $this->_ville = $this->input->post('ville');
                 $this->_adresse = $this->input->post('adresse');
-
+                $this->_ajax = $this->input->post('ajax');
 
                 if ($this->form_validation->run('modifier_entreprise') == FALSE) {
                     if ($this->_ajax == "ok") {
@@ -315,11 +312,13 @@ class admin_controller extends CI_Controller {
                         'adresse' => $this->_adresse,
                         'email' => $this->_email);
 
-                    $result = $this->admin_model->modifier_utilisateur($data_utilisateur, "entreprise");
-                    if ($result == TRUE)
+                    try {
+                        $result = $this->admin_model->modifier_utilisateur($data_utilisateur, 'entreprise');
                         $data['message'] = "0";
-                    else
+                    } catch (Exception $ex) {
                         $data['message'] = "-1";
+                        $data['error'] = $ex->getMessage();
+                    }
                     return $this->output->set_output(json_encode($data));
                 }
                 break;
@@ -349,12 +348,13 @@ class admin_controller extends CI_Controller {
                         'prenom' => $this->_prenom,
                         'tel' => $this->_tel,
                         'email' => $this->_email);
-
-                    $result = $this->admin_model->modifier_utilisateur($data_utilisateur, "enseignant"); //on specifie le type de compte
-                    if ($result == TRUE)
+                    try {
+                        $result = $this->admin_model->modifier_utilisateur($data_utilisateur, "enseignant"); //on specifie le type de compte
                         $data['message'] = "0";
-                    else
+                    } catch (Exception $ex) {
                         $data['message'] = "-1";
+                        $data['error'] = $ex->getMessage();
+                    }
                     return $this->output->set_output(json_encode($data));
                 }
                 break;

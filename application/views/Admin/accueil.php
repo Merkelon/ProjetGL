@@ -1,6 +1,6 @@
 <div id="content" align="center">
 	<br />
-	<div class="indexLigneDIV">
+        <div class="indexLigneDIV">
 		<div class="indexLigne curve">
 			<h1>Gestion des <span>Etudiants</span></h1>
 			Ajouter un nouveau

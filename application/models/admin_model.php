@@ -70,14 +70,20 @@ class Admin_model extends CI_Model {
 
     function modifier_utilisateur($data_utilisateur, $type_utilisateur) {
 
-        $resultat = $this->db->select('id_compte')
+        /*$resultat = $this->db->select('id_compte')
                 ->where('id', $data_utilisateur['id'])
                 ->get($type_utilisateur)
                 ->row(); //recuperer l'id de l'utilisateur
-
+        */
+        
+        $db_debug = $this->db->db_debug;        
+        $this->db->db_debug = FALSE;
         $this->db->where('id', $data_utilisateur['id']);
         $result = $this->db->update($type_utilisateur, $data_utilisateur);
-
+        if(!$result){          
+            throw new Exception($this->db->_error_message());
+        }
+        $this->db->db_debug = $db_debug;
         return $result;
     }
 
@@ -107,11 +113,7 @@ class Admin_model extends CI_Model {
          $this->db->join('etudiant', 'etudiant.id = d.id_etudiant');
          $this->db->join('entreprise', 'entreprise.id = d.id_entreprise');
          $query = $this->db->get()->result();
-//        $sql = 'SELECT et.nom,et.prenom,en.nom,d.date_demande,d.date_reponse,d.validation_entreprise,d.validation_etudiant
-//        from demande_stage d
-//        Left join entreprise en on d.id_entreprise=en.id
-//        join etudiant et on d.id_etudiant=et.id';     
-//        $query = $this->db->query($sql)->result();
+
         
         return $query;
         

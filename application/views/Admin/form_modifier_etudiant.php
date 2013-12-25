@@ -99,7 +99,7 @@ $(document).ready(function(){
                 element.parent().children("span.msg_err").text("Entrer une adresse email valide");
 	});	
         
-	$("input#valider_creation").click(function(){
+	$("input#valider_modification").click(function(){
             var id = $('input.id_utilisateur').val();                   	
             var nom = $('input.nom').val();                   	
             var prenom = $('input.prenom').val();                   	
@@ -132,7 +132,7 @@ $(document).ready(function(){
                         }
                        
                        else if(result["message"] == "-1"){ 
-                            $("div.msg_res").text("").text("Une erreur s'est produite");
+                           $("div.msg_res").fadeIn(300).text("").text(result["error"]);
                         }
                         else{
                             $("div#msg_nom").fadeIn(300).children("div.message").text("").text(result['nom']);                 

@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "compte_controller";
 $route['login'] = "compte_controller/connexion";
 $route['logout'] = "compte_controller/deconnexion";
 

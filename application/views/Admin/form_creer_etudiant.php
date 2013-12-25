@@ -157,7 +157,7 @@ $(document).ready(function(){
                         }
                        
                        else if(result["message"] == "-1"){ 
-                            $("div.msg_res").text("").text("Une erreur s'est produite");
+                            $("div.msg_res").fadeIn(300).text("").text("Une erreur s'est produite");
                         }
                         else{
                             $("div#msg_nom").fadeIn(300).children("div.message").text("").text(result['nom']);                 
