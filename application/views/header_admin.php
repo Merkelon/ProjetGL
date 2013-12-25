@@ -18,17 +18,18 @@
     <div id="header_bottom">
         <div id="menu_h">
             <ul>
-                <?php echo anchor('admin', '<li class="_home"></li>'); ?>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('admin/liste_etudiants', '<li class="_4">Etudiants</li>'); ?>
+                <a href="admin"><li class="_home"></li></a>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('admin/liste_entreprises', '<li class="_1">Entreprises</li>'); ?>
+                <a href="admin/liste_etudiants"><li class="_4_current">Etudiants</li></a>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('admin/liste_enseignants', '<li class="_4">Enseignants</li>'); ?>
+                <a href="admin/liste_entreprises"><li class="_1">Entreprises</li></a>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('admin/demandes_stage', '<li class="_3">Stages</li>'); ?>
+                <a href="admin/liste_enseignants"><li class="_4">Enseignants</li></a>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('admin/liste_rapports', '<li class="_3">Rapports</li>'); ?>
+                <a href="admin/demandes_stage"><li class="_3">Stages</li></a>
+                <li class="separateur">&nbsp;</li>
+                <a href="admin/liste_rapports"><li class="_3">Rapports</li></a>
                 <li class="separateur">&nbsp;</li>
             </ul>
         </div>
