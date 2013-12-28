@@ -11,7 +11,12 @@ class admin_controller extends CI_Controller {
         $this->load->helper(array('url', 'form', 'date'));
         $this->load->model("admin_model", "", TRUE);
         $this->_salt = "123456789987654321";
-        
+        $this->_nivx = array();
+        $this->_nivx['1cp'] = "1ére année CP ";
+        $this->_nivx['2cp'] = "2éme année CP ";
+        $this->_nivx['1ci'] = "1ére année CI ";
+        $this->_nivx['2ci'] = "2éme année CI ";
+        $this->_nivx['3ci'] = "3éme année CI ";
     }
 
     function index() {
@@ -21,8 +26,60 @@ class admin_controller extends CI_Controller {
         $this->load->view("page", $res);
     }
 
+    // test des fonction ajax :D
+    function liste_etudiants() {
+        $this->_page = $this->input->post('page'); // le numero de page
+        $this->_nbr = $this->input->post('nbr'); // nombre d'element par page
+        $this->_option = $this->input->post('option'); // le niveau choisit
+        $this->_filiere = $this->input->post('filiere'); // le niveau choisit
+        $this->_motif_recherche = $this->input->post('motif_recherche'); // le niveau choisit
+        $this->_niveau = $this->input->post('niveau'); // l'option choisit
+        $data_filter = array(
+            'page' => $this->_page,
+            'nbr' => $this->_nbr,
+            'option' => $this->_option,
+            'filiere' => $this->_filiere,
+            'motif_recherche' => $this->_motif_recherche,
+            'niveau' => $this->_niveau);
+        $resultat = $this->admin_model->liste_etudiants($data_filter);
+        
+        $data['etudiants'] = $resultat['query'];
+        $data['page'] = $this->_page;
+        $data['nbr_etu'] = $resultat['num'];
+        $data['nbr_pp'] = $this->_nbr;
+        
+        $res['nbr_etu'] = $resultat['num'];
+        $res['liste_etudiants'] = $this->load->view("Admin/load_data_etudiant", $data, TRUE);
+        
+        return $this->output->set_output(json_encode($res));
+    }
+    function liste_enseignants() {
+        $this->_page = $this->input->post('page'); // le numero de page
+        $this->_nbr = $this->input->post('nbr'); // nombre d'element par page      
+        $this->_motif_recherche = $this->input->post('motif_recherche'); // le niveau choisit
+        $data_filter = array(
+            'page' => $this->_page,
+            'nbr' => $this->_nbr,
+            'motif_recherche' => $this->_motif_recherche);
+        $resultat = $this->admin_model->liste_enseignants($data_filter);
+        
+        $data['enseignants'] = $resultat['query'];
+        $data['page'] = $this->_page;
+        $data['nbr_etu'] = $resultat['num'];
+        $data['nbr_pp'] = $this->_nbr;
+        
+        $res['nbr_etu'] = $resultat['num'];
+        $res['liste_etudiants'] = $this->load->view("Admin/load_data_enseignant", $data, TRUE);
+        
+        return $this->output->set_output(json_encode($res));
+    }
+
     function all_etudiants() {
         $data['etudiants'] = $this->admin_model->all_etudiants();
+        $data['options'] = $this->admin_model->all_options();
+        $data['filieres'] = $this->admin_model->all_filieres();
+        $data['niveaux'] = $this->admin_model->all_niveaux();
+        $data['nivx'] = $this->_nivx;
         $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
         $res['content'] = $this->load->view("Admin/liste_etudiants", $data, TRUE);
         $this->load->view("page", $res);
@@ -52,6 +109,11 @@ class admin_controller extends CI_Controller {
                 $this->_cin = $this->input->post('cin');
                 $this->_cne = $this->input->post('cne');
                 $this->_email = $this->input->post('email');
+                $this->_ann_insc = $this->input->post('ann_insc');
+                $this->_niv_insc = $this->input->post('niv_insc');
+                $this->_niv_act = $this->input->post('niv_act');
+                $this->_option = $this->input->post('option');
+                $this->_ingenieur = $this->input->post('ingenieur');
                 $this->_ajax = $this->input->post('ajax');
 
                 if ($this->form_validation->run('ajouter_etudiant') == FALSE) {
@@ -64,12 +126,14 @@ class admin_controller extends CI_Controller {
                         $res['cin'] = str_replace($motifs, '', form_error('cin'));
                         $res['cne'] = str_replace($motifs, '', form_error('cne'));
                         $res['apogee'] = str_replace($motifs, '', form_error('apogee'));
+                        $res['ann_insc'] = str_replace($motifs, '', form_error('ann_insc'));
                         $res['password'] = str_replace($motifs, '', form_error('password'));
                         $res['password_conf'] = str_replace($motifs, '', form_error('password_conf'));
                         return $this->output->set_output(json_encode($res));
                     } else {
+                        $data['options'] = $this->admin_model->liste_options();
                         $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
-                        $res['content'] = $this->load->view("Admin/form_creer_etudiant", "", TRUE);
+                        $res['content'] = $this->load->view("Admin/form_creer_etudiant", $data, TRUE);
                         $this->load->view("page", $res);
                     }
 //                        $this->load->view('Admin/form_creer_etudiant');
@@ -91,6 +155,11 @@ class admin_controller extends CI_Controller {
                         'email' => $this->_email,
                         'apogee' => $this->_apogee,
                         'cin' => $this->_cin,
+                        'annee_univ_inscription' => $this->_ann_insc,
+                        'niveau_univ_inscription' => $this->_niv_insc,
+                        'niveau_univ_actuel' => $this->_niv_act,
+                        'id_option' => $this->_option,
+                        'ingenieur' => $this->_ingenieur,
                         'cne' => $this->_cne);
 
                     $result = $this->admin_model->creer_compte($data_compte, $data_utilisateur, "etudiant");
@@ -217,6 +286,7 @@ class admin_controller extends CI_Controller {
 //        $result['compte_utilisateur']=$result[1];
         switch ($type_utilisateur) {
             case 'etudiant' :
+                $result['options'] = $this->admin_model->liste_options();
                 $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
                 $res['content'] = $this->load->view("Admin/form_modifier_etudiant", $result, TRUE);
                 $this->load->view("page", $res);
@@ -245,6 +315,11 @@ class admin_controller extends CI_Controller {
                 $this->_email = $this->input->post('email');
                 $this->_apogee = $this->input->post('apogee');
                 $this->_ajax = $this->input->post('ajax');
+                $this->_ann_insc = $this->input->post('ann_insc');
+                $this->_niv_insc = $this->input->post('niv_insc');
+                $this->_niv_act = $this->input->post('niv_act');
+                $this->_option = $this->input->post('option');
+                $this->_ingenieur = $this->input->post('ingenieur');
                 // reste à verifier les champs à valeurs unique              
 
                 if ($this->form_validation->run('modifier_etudiant') == FALSE) {
@@ -256,6 +331,7 @@ class admin_controller extends CI_Controller {
                         $res['cin'] = str_replace($motifs, '', form_error('cin'));
                         $res['cne'] = str_replace($motifs, '', form_error('cne'));
                         $res['apogee'] = str_replace($motifs, '', form_error('apogee'));
+                        $res['ann_insc'] = str_replace($motifs, '', form_error('ann_insc'));
                         return $this->output->set_output(json_encode($res));
                     }
                     $this->get_utilisateur('etudiant', $this->_id);
@@ -267,6 +343,11 @@ class admin_controller extends CI_Controller {
                         'apogee' => $this->_apogee,
                         'cin' => $this->_cin,
                         'cne' => $this->_cne,
+                        'annee_univ_inscription' => $this->_ann_insc,
+                        'niveau_univ_inscription' => $this->_niv_insc,
+                        'niveau_univ_actuel' => $this->_niv_act,
+                        'id_option' => $this->_option,
+                        'ingenieur' => $this->_ingenieur,
                         'id' => $this->_id);
                     try {
                         $result = $this->admin_model->modifier_utilisateur($data_utilisateur, 'etudiant');

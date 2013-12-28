@@ -1,7 +1,7 @@
 <header>
     <div id="header_top">
         <div id="logo">
-            <a href="Accueil"><img src="<?php echo base_url(); ?>assets/img/logoo.jpg" style="height:70px"/></a>
+            <a href="<?php echo base_url(); ?>admin"><img src="<?php echo base_url(); ?>assets/img/logoo.jpg" style="height:70px"/></a>
         </div>
         <div id="header_top_right">
             <div id="info_user">
@@ -48,7 +48,7 @@
                 <li class="separateur">&nbsp;</li>
 <?php echo anchor('admin/demandes_stage', '<li class="_3' . $val_stage . '">Stages</li>'); ?>
                 <li class="separateur">&nbsp;</li>
-                <?php echo anchor('ZABI', '<li class="_3' . $val_rapport . '">Rapports</li>'); ?>
+                <?php echo anchor('admin', '<li class="_3' . $val_rapport . '">Rapports</li>'); ?>
                 <li class="separateur">&nbsp;</li>
             </ul>
         </div>

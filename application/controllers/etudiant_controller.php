@@ -2,7 +2,7 @@
 
 class Etudiant_controller extends CI_Controller {
 	public $chemin = 'Etudiant';
-	/**
+	/*
 	 * Index Page for this controller.
 	 *
 	 * Maps to the following URL

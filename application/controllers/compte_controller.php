@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -48,10 +48,8 @@ class Compte_controller extends CI_Controller {
                     break;
                 case 'admin':
                     redirect('admin');
-                    break;              
+                    break;
             }
-            
-            $data['message'] = "You are logged in! Now go take a look at the ";
             $this->load->view('Compte/success', $data);
         }
     }

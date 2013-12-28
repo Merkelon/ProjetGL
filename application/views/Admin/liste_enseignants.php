@@ -1,31 +1,35 @@
 <div id="content">   
 
 <!-- h4>Rechercher un utilisateur </h4><input type="text" class="recherche"  / -->
-<br />
-        <h1>Liste des <span>Enseignants</span></h1>
-        <br />
-     <table class="liste_tab">
-<tr>
-        <th>Nom</th>
-        <th>Prenom</th>
-        <th>Email</th>
-        <th>Tel</th>     
-        <th></th>
-  </tr>
-<?php foreach ($enseignants as $enseignant){ ?>
-  <tr>
-  <td><?php echo $enseignant->nom ?> </td> 
-  <td><?php echo $enseignant->prenom ?> </td> 
-  <td><?php echo $enseignant->email ?> </td> 
-  <td><?php echo $enseignant->tel ?> </td> 
-   <td>
-   <a href="<?php echo base_url(); ?>admin/modifier_utilisateur/enseignant/<?php echo $enseignant->id;  ?>"><img title="Modifier" src="<?php echo base_url();?>assets/img/modify.png" /></a> 
-   <a class="supprimer" id="<?php echo $enseignant->id_compte; ?>" href="#"><img title="Supprimer" class="supprimer" src="<?php echo base_url();?>assets/img/delete.png" /> </a> 
-   </td>
-  </tr>
-<?php } ?>
-     </table>
-
+  <br />
+    <h1>Liste des <span>etudiants</span></h1>
+    <br />
+    <div style='min-width:900px;text-align:center;'>
+        <label for="recherche_rapide">Recherche rapide : </label>
+        <input type="text" id="recherche_rapide" style= "width:300px" />
+        <input type="button" value="Ok" id="recherche_rapide_btn" onclick="byMotif_recherche();" class="bouton icon_add" />
+        <br/>
+        <label style="margin-top: 8px;float:left;display:relative;" id="nbr_elm">
+10 articles
+        </label>
+        <select style="width: 80px;display:inline; float:right;" id="nbr_elm_pp" onChange="nbr_elm_pp(this.value)">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+        </select>
+        <label style="margin: 8px; float:right;" for="">Affichage : </label>
+    </div>
+    <br />
+    <div id="container">
+        
+    </div>
+    <div id="loading"></div>      
 
 <script type="text/javascript" > 
 $(document).ready(function(){   
