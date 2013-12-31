@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/ui.notify.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/jquery.fancybox.css" />
 	<!-- jQuery -->
-	<script type="text/javascript" src="<?php echo base_url();?>assets/javascript/jquery/jquery-1.8.3.js" > </script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/jquery/jquery-1.10.2.js" ></script>
         <script type="text/javascript">var base_url = "<?php echo base_url();?>";</script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/javascript/jquery/jquery-ui.js"></script>
 	<!-- Cufon -->

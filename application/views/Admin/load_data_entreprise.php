@@ -1,48 +1,38 @@
 <div id="data">
 
-<table class="liste_tab">
-    <tr>
-        <th>Apogee</th>
-        <th>Nom</th>
-        <th>Prenom</th>
-        <th>CIN</th>
-        <th>CNE</th>       
-        <th>Email</th>
-        <th>Niveau actuel</th>
-        <th>Option</th>
-        <th>Filière</th>
-        <th>Actions</th>
-    </tr>
-<?php 
-if($nbr_etu>0){
-?>
-    <?php foreach ($etudiants as $etudiant) { ?>
-
+    <table class="liste_tab">
         <tr>
-            <td><?php echo $etudiant->apogee ?> </td>
-            <td><?php echo strtoupper($etudiant->nom) ?> </td>
-            <td><?php echo ucfirst(strtolower($etudiant->prenom)) ?> </td>
-            <td><?php echo $etudiant->cin ?> </td>
-            <td><?php echo $etudiant->cne ?> </td>
-            <td><?php echo $etudiant->email ?> </td>
-            <td><?php echo $etudiant->niveau_univ_actuel ?> </td>
-            <td><?php echo $etudiant->intitule_opt ?> </td>
-            <td><?php echo $etudiant->intitule_fil ?> </td>
-            <td>
-
-                <a href="<?php echo base_url(); ?>admin/modifier_utilisateur/etudiant/<?php echo $etudiant->id_etudiant; ?>" ><img title="Modifier" src="<?php echo base_url(); ?>assets/img/modify.png" /> </a> 
-                <a class="supprimer" id="<?php echo $etudiant->id_compte; ?>" ><img title="Supprimer" onclick='supprimer(this);' class="supprimer" src="<?php echo base_url(); ?>assets/img/delete.png" /> </a> 
-            </td>
+            <th>Nom</th>
+            <th>Domaine</th>
+            <th>Email</th>
+            <th>Tel</th>
+            <th>Fax</th>
+            <th>Ville</th>
+            <th>Adresse</th>
+            <th></th>       
         </tr>
-    <?php }
-}
-else
-    echo "<tr><td colspan='12' >Pas d'enregistrements</td></tr>";
-    ?>
-</table>
+        <?php foreach ($entreprises as $entreprise) { ?>
+            <tr>
+                <td> <?php echo $entreprise->nom ?> </td>
+                <td> <?php echo $entreprise->intitule ?> </td>
+                <td> <?php echo $entreprise->email ?> </td>
+                <td> <?php echo $entreprise->tel ?> </td>
+                <td> <?php echo $entreprise->fax ?> </td>
+                <td> <?php echo $entreprise->ville ?> </td>
+                <td> <?php echo $entreprise->adresse ?> </td>
+                <td> 
+                    <a href="<?php echo base_url(); ?>admin/modifier_utilisateur/entreprise/<?php echo $entreprise->id_entreprise; ?>"><img title="Modifier" src="<?php echo base_url(); ?>assets/img/modify.png" /> </a> 
+                    <a class="supprimer" id="<?php echo $entreprise->id_compte; ?>" href="#"><img title="Supprimer" class="supprimer" src="<?php echo base_url(); ?>assets/img/delete.png" /> </a> 
+                </td>
+            </tr>
+        <?php } ?>
+
+    </table>
+
 </div>
+
 <div id="pagination">
-    <?php
+<?php
     /* Pour la partie de pagination */
 
     $cur_page = $page;
@@ -55,7 +45,7 @@ else
     $msg ="";
     
     /* ---------------------------------- Calcule des valeurs de début et de fin de la boucle ---------------------------------- */
-    $no_of_paginations = ceil($nbr_etu / $per_page);
+    $no_of_paginations = ceil($nbr_ent / $per_page);
     if ($cur_page >= 7) {
         $start_loop = $cur_page - 3;
         if ($no_of_paginations > $cur_page + 3)
@@ -136,4 +126,5 @@ else
 	
 	echo $msg;
         ?>
+
 </div>

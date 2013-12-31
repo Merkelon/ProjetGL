@@ -3,9 +3,9 @@
     <?php include_once 'head.php'; ?>
     <body>
         <div id="page">
-            <?php include_once 'header_admin.php'; ?>
+            <?php echo $header; ?>
             <div id="main">
-                <?php echo $menuv_admin; ?>
+                <?php echo $menu_v; ?>
                 <?php echo $content; ?>
             </div>
             <div id="notif" style="display:none">

@@ -2,7 +2,16 @@
     <br />
     <h1>Modifier <span>Etudiant</span></h1>
     <br />
-    <div class="msg_res" > </div>
+    <div id="messages">
+        <div id="reponse_ok">
+            <p></p>
+            <a class="close_msg" title="Fermer"></a>
+        </div>
+        <div id="reponse_error">
+            <p></p>
+            <a class="close_msg" title="Fermer"></a>
+        </div>
+    </div>
     <div class="clear"></div>
     <?php echo form_open('admin/modifier_utilisateur/etudiant'); ?>   
     <table class="formulaire" style="width: 360px;">
@@ -151,17 +160,17 @@
             <th><label for="option"  >Option :</label></th>
             <td style="width: 180px;">
                 <select class="option" id="option" name="option" style="width: 212px;">
-<?php
-foreach ($options as $option) {
-    if ($option->id === $utilisateur->id_option)
-        $selected = "selected";
-    else
-        $selected = "";
-    ?>
+                    <?php
+                    foreach ($options as $option) {
+                        if ($option->id === $utilisateur->id_option)
+                            $selected = "selected";
+                        else
+                            $selected = "";
+                        ?>
 
                         <option value="<?php echo $option->id; ?>" <?php echo $selected; ?> ><?php echo $option->intitule; ?> </option>
 
-<?php } ?>
+                    <?php } ?>
 
                 </select>
             </td>
@@ -175,13 +184,13 @@ foreach ($options as $option) {
         <tr>
             <th><label for="ingenieur" title="Est t il ingenieur ce fils de pute ???" >Ingenieur :</label></th>
             <td style="width: 180px;">
-<?php
-$checked = "";
-if ($utilisateur->ingenieur == 1)
-    $checked = "checked";
-else
-    $checked = "";
-?>
+                <?php
+                $checked = "";
+                if ($utilisateur->ingenieur == 1)
+                    $checked = "checked";
+                else
+                    $checked = "";
+                ?>
                 <input type="checkbox" <?php echo $checked; ?> id="ingenieur" name="ingenieur" class="ingenieur"  />
 
             </td>
@@ -262,7 +271,7 @@ else
                         function(data) {
                             var result = jQuery.parseJSON(data);
                             if (result["message"] == "0") {
-                                $("div.msg_res").fadeIn(300).text("").text("Etudiant modifié avec succés");
+                                $("#reponse_ok").fadeIn(300).find("p").text("L'étudiant a été modifié avec succés.");
                                 $("div#msg_nom").fadeOut(300);
                                 $("div#msg_prenom").fadeOut(300);
                                 $("div#msg_cin ").fadeOut(300);
@@ -273,7 +282,7 @@ else
                             }
 
                             else if (result["message"] == "-1") {
-                                $("div.msg_res").fadeIn(300).text("").text(result["error"]);
+                                $("div#reponse_error").fadeIn(300).find("p").text(result["error"]);
                             }
                             else {
                                 $("div#msg_nom").fadeIn(300).children("div.message").text("").text(result['nom']);

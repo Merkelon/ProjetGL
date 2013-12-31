@@ -15,7 +15,7 @@
   <td><?php echo $enseignant->tel ?> </td> 
    <td>
    <a href="<?php echo base_url(); ?>admin/modifier_utilisateur/enseignant/<?php echo $enseignant->id;  ?>"><img title="Modifier" src="<?php echo base_url();?>assets/img/modify.png" /></a> 
-   <a class="supprimer" id="<?php echo $enseignant->id_compte; ?>" href="#"><img title="Supprimer" class="supprimer" src="<?php echo base_url();?>assets/img/delete.png" /> </a> 
+   <a class="supprimer" id="<?php echo $enseignant->id_compte; ?>" ><img onclick='supprimer(this);' title="Supprimer" class="supprimer" src="<?php echo base_url();?>assets/img/delete.png" /> </a> 
    </td>
   </tr>
 <?php } ?>
@@ -35,7 +35,7 @@
     $msg ="";
     
     /* ---------------------------------- Calcule des valeurs de début et de fin de la boucle ---------------------------------- */
-    $no_of_paginations = ceil($nbr_etu / $per_page);
+    $no_of_paginations = ceil($nbr_ens / $per_page);
     if ($cur_page >= 7) {
         $start_loop = $cur_page - 3;
         if ($no_of_paginations > $cur_page + 3)
@@ -63,7 +63,7 @@
 	// FOR ENABLING THE FIRST BUTTON
 	if($first_btn && $cur_page > 1)
 	{
-		$msg .= "<li p='1' class='active' onclick='pagin(1)'>l<</li>";
+		$msg .= "<li p='1' class='active' onclick='loadData(this)'>l<</li>";
 	}
 	else if($first_btn)
 	{
@@ -74,7 +74,7 @@
 	if($previous_btn && $cur_page > 1)
 	{
 		$pre = $cur_page - 1;
-		$msg .= "<li p='$pre' class='active' onclick='pagin($pre)'><<</li>";
+		$msg .= "<li p='$pre' class='active' onclick='loadData(this)'><<</li>";
 	}
 	else if($previous_btn)
 	{
@@ -84,16 +84,16 @@
 	for($i = $start_loop; $i <= $end_loop; $i++)
 	{
 		if ($cur_page == $i)
-			$msg .= "<li p='$i' style='border: 1px solid #76A2B6;color:#fff;background-color:#377393;' onclick='pagin($i)' class='active current'>{$i}</li>";
+			$msg .= "<li p='$i' style='border: 1px solid #76A2B6;color:#fff;background-color:#377393;' onclick='loadData(this)' class='active current'>{$i}</li>";
 		else
-			$msg .= "<li p='$i' class='active' onclick='pagin($i)'>{$i}</li>";
+			$msg .= "<li p='$i' class='active' onclick='loadData(this)'>{$i}</li>";
 	}
 
 	// TO ENABLE THE NEXT BUTTON
 	if($next_btn && $cur_page < $no_of_paginations)
 	{
 		$nex = $cur_page + 1;
-		$msg .= "<li p='$nex' class='active' onclick='pagin($nex)'>>></li>";
+		$msg .= "<li p='$nex' class='active' onclick='loadData(this)'>>></li>";
 	}
 	else if($next_btn)
 	{
@@ -103,7 +103,7 @@
 	// TO ENABLE THE END BUTTON
 	if($last_btn && $cur_page < $no_of_paginations)
 	{
-		$msg .= "<li p='$no_of_paginations' class='active' onclick='pagin($no_of_paginations)'>>l</li>";
+		$msg .= "<li p='$no_of_paginations' class='active' onclick='loadData(this)'>>l</li>";
 	}
 	else if ($last_btn)
 	{

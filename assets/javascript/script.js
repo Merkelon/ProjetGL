@@ -1,14 +1,96 @@
-// Fonts Cufon
-Cufon.replace('#content h1, #logo-login h1', {fontFamily: 'Comfortaa', hover: true});
-Cufon.replace('_', {fontFamily: 'Comfortaa Bold', hover: true});
-Cufon.replace('_', {fontFamily: 'Comfortaa Thin', hover: true});
-// Liste des l3ibat  test z3ma v.0
+/* ============================= Supprimer Compte ============================= */
 
+function supprimer(element) {
+    if (confirm("Etes vous sûr de vouloir supprimer cet enregistrement ?")) {
+        var id_compte = $(element).parent().attr('id');
+        $(element).parent().parent().parent().fadeOut(300);
+        $.post(base_url + "admin_controller/supprimer_compte", {id_compte: id_compte},
+        function(data) {
+            var result = jQuery.parseJSON(data);
+            // alert(result);
+        });
+    }
+}
+
+/* ============================= Fonts Cufon ============================= */
+
+Cufon.replace('#content h1, #logo-login h1', {fontFamily: 'Comfortaa', hover: true}); // Comfortaa Bold , Comfortaa Thin
+Cufon.replace('h1, .title', {fontFamily: 'Segoe UI Light', hover: true});
+Cufon.replace('h2', {fontFamily: 'Segoe UI Bold 1', hover: true}); // Segoe UI Bold
+Cufon.replace('p', {fontFamily: 'Myriad Pro Regular', hover: true});
+
+/* ============================= On load Actions ============================= */
+
+$(document).ready(function() {
+
+    // close message Succes & Error
+    $(".close_msg").click(function() {
+        $(this).parent().fadeOut("slow");
+    });
+
+    // login boxs
+    $(".login").animate({top: '160px'}, {queue: false, duration: 0});
+    $(".login").css("display", "none");
+
+    $('.login-button').click(function() {
+        $(".login").css("display", "none");
+        $(".login").animate({top: '160px'}, {queue: false, duration: 100});
+        $(".close").click();
+        $(this).next(".login").css("display", "block");
+        $(this).next(".login").stop().animate({top: '0px'}, {queue: false, duration: 160});
+        $("#admin_username").val("admin");
+        $("#admin_password").val("azerazer");
+        $("#etudiant_apogee").val("1002");
+        $("#etudiant_password").val("azerazer");
+    });
+
+    // forget boxs
+    $(".forget").animate({top: '160px'}, {queue: false, duration: 0});
+    $(".forget").css("display", "none");
+
+    $('.forget-link').click(function() {
+        $(".forget").css("display", "none");
+        $(".login").animate({top: '160px'}, {queue: false, duration: 100});
+        $(".close").click();
+        $(this).closest('div').next(".forget").css("display", "block");
+        $(this).closest('div').next(".forget").stop().animate({top: '0px'}, {queue: false, duration: 160});
+    });
+
+    // close boxs
+    $(".close").click(function() {
+        $(this).parent().stop().animate({top: '160px'}, {queue: false, duration: 100});
+        $(this).parent().parent().find("input.username").val("").removeClass("err");
+        $(this).parent().parent().find("input.password").val("").removeClass("err");
+        $(this).parent().parent().find("label.username").removeClass("err");
+        $(this).parent().parent().find("label.password").removeClass("err");
+    });
+
+    // click CNX onEnter
+    $("#blocks").keypress(function() {
+        if (window.event.keyCode == 13)
+            $("button#cnx").click();
+    })
+});
+
+
+/* ============================= Fonctions Utils ============================= */
+function rechercheOnEnter(e, elem)
+{
+    if (!e)
+        var e = window.event;
+    if (e.keyCode)
+        code = e.keyCode;
+    else if (e.which)
+        code = e.which;
+
+    if (code === 13)
+        loadData(elem);
+}
 function testNumber(evt) {
     var theEvent = evt || window.event;
     var key_code = theEvent.keyCode || theEvent.which;
     key = String.fromCharCode(key_code);
-    var regex = /[0-9]/; // 
+    var regex = /[0-9]/;
     if (!regex.test(key) && key_code !== 8)
     {
         theEvent.returnValue = false;
@@ -17,105 +99,7 @@ function testNumber(evt) {
     }
 }
 
-
-function byFiliere(filiere) {
-    var niv_act = $("#niv_act").val();
-    var elm = $("#nbr_elm_pp").val();
-    var option = $("#option").val();
-    var motif_recherche = $("#recherche_rapide").val();
-    loadData(1, elm, niv_act, option, filiere, motif_recherche);
-}
-
-function byOption(option) {
-    var niv_act = $("#niv_act").val();
-    var elm = $("#nbr_elm_pp").val();
-    var filiere = $("#filiere").val();
-    var motif_recherche = $("#recherche_rapide").val();
-    loadData(1, elm, niv_act, option, filiere, motif_recherche);
-}
-
-function byNiv_act(niv_act) {
-    var elm = $("#nbr_elm_pp").val();
-    var filiere = $("#filiere").val();
-    var option = $("#option").val();
-    var motif_recherche = $("#recherche_rapide").val();
-    loadData(1, elm, niv_act, option, filiere, motif_recherche);
-}
-
-function nbr_elm_pp(elm) {
-    var option = $("#option").val();
-    var filiere = $("#filiere").val();
-    var motif_recherche = $("#recherche_rapide").val();
-    var niv_act = $("#niv_act").val();
-    loadData(1, elm, niv_act, option, filiere, motif_recherche);
-    setCookie("nbr_elm_pp", elm, 365);
-}
-
-function byMotif_recherche(){
-    var elm = $("#nbr_elm_pp").val();
-    var option = $("#option").val();
-    var filiere = $("#filiere").val();
-    var niv_act = $("#niv_act").val();
-     var motif_recherche = $("#recherche_rapide").val();
-    loadData_sansloading(1, elm, niv_act, option, filiere, motif_recherche);
-}
-
-function pagin(p){
-    var elm = $("#nbr_elm_pp").val();
-    var niv_act = $("#niv_act").val();
-    var option = $("#option").val();
-    var filiere = $("#filiere").val();
-    var motif_recherche = $("#motif_recherche").val();
-    loadData(p, elm, niv_act, option, filiere, motif_recherche);
-}
-
-// en construction :D
-function loadData(page, nbr_, niveau, option, filiere, motif_recherche) {
-    $('#loading').html("<img src='" + base_url + "assets/img/load_.gif'/><span> Chargement ..</span>").fadeIn('fast');
-    $.post(base_url + "admin_controller/liste_etudiants", {
-        page: page,
-        nbr: nbr_,
-        niveau: niveau,
-        filiere: filiere,
-        motif_recherche: motif_recherche,
-        option: option},
-    function(data) {
-        var result = jQuery.parseJSON(data);
-        $("#container").ajaxComplete(function(event, request, settings) {
-            $("#container").html(result["liste_etudiants"]);
-            var plus;
-            if(result["nbr_etu"] > 1)
-                plus = "s";
-            else
-                plus = "";           
-            $("#nbr_elm").html("<span style='color:#8F0000'>"+result["nbr_etu"]+"</span> Etudiant"+plus);
-            $('#loading').fadeOut('fast');
-        });
-    });
-}
-function loadData_sansloading(page, nbr_, niveau, option, filiere, motif_recherche) {
-    
-    $.post(base_url + "admin_controller/liste_etudiants", {
-        page: page,
-        nbr: nbr_,
-        niveau: niveau,
-        filiere: filiere,
-        motif_recherche: motif_recherche,
-        option: option},
-    function(data) {
-        var result = jQuery.parseJSON(data);
-        $("#container").ajaxComplete(function(event, request, settings) {
-            $("#container").html(result["liste_etudiants"]);
-            var plus;
-            if(result["nbr_etu"] > 1)
-                plus = "s";
-            else
-                plus = "";           
-            $("#nbr_elm").html(result["nbr_etu"]+" Etudiant"+plus);
-            $('#loading').fadeOut('fast');
-        });
-    });
-}
+/* ============================= Set & Get Cookies ============================= */
 
 function setCookie(c_name, value, exdays)
 {
@@ -140,3 +124,4 @@ function getCookie(c_name)
     }
 }
 
+/* ============================= ################## ============================= */

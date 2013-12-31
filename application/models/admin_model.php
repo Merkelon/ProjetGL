@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -27,12 +27,17 @@ class Admin_model extends CI_Model {
     }
 
     function all_options() {
-        $query = $this->db->get('option_filiere')->result(); // select * from etudiant
+        $query = $this->db->get('option_filiere')->result(); // select * from option_filiere
         return $query;
     }
     
+    function all_domaines() {
+        $query = $this->db->get('domaine_entreprise')->result(); // select * from domaine_entreprise
+        return $query;
+    }
+
     function all_filieres() {
-        $query = $this->db->get('filiere')->result(); // select * from etudiant
+        $query = $this->db->get('filiere')->result(); // select * from filiere
         return $query;
     }
 
@@ -40,85 +45,121 @@ class Admin_model extends CI_Model {
         if ($data_filter["niveau"] === "-1") {
             $data_filter["niveau"] = "";
         }
-        if($data_filter["option"] === "-1") {
+
+        if ($data_filter["option"] === "-1") {
             $data_filter["option"] = "";
         }
-        if($data_filter["filiere"] === "-1") {
+
+        if ($data_filter["filiere"] === "-1") {
             $data_filter["filiere"] = "";
         }
-        
-        
+
         /* Pour la requete d'affichage des enregistrements */
-        $niveau          = $data_filter["niveau"];
-        $option          = $data_filter["option"];
-        $filiere         = $data_filter["filiere"];
+        $niveau = $data_filter["niveau"];
+        $option = $data_filter["option"];
+        $filiere = $data_filter["filiere"];
         $motif_recherche = $data_filter["motif_recherche"];
-        $cur_page        = $data_filter["page"];
-        $page = $cur_page--;
-        $per_page        = $data_filter["nbr"];
-        $start = $cur_page * $per_page;     
-        
-        $adn_query="(
+        $cur_page = $data_filter["page"];
+        $per_page = $data_filter["nbr"];
+        $start = ($cur_page-1) * $per_page;
+
+        $and_or_query = "(
             e.nom like '%$motif_recherche%'  
             OR e.prenom like '%$motif_recherche%'
             OR e.cne like '%$motif_recherche%'
             OR e.apogee like '%$motif_recherche%'
             )";
+        
         $num = $this->db->select("*, e.id as id_etudiant")
                 ->from("etudiant e")
                 ->join('option_filiere o', 'o.id = e.id_option')
                 ->join('filiere f', 'f.id = o.id_filiere')
-                ->like("e.id_option",$option)
-                ->like("e.niveau_univ_actuel",$niveau)
-                ->like("o.id_filiere",$filiere)
-                ->where($adn_query, NULL, FALSE)
+                ->like("e.id_option", $option)
+                ->like("e.niveau_univ_actuel", $niveau)
+                ->like("o.id_filiere", $filiere)
+                ->where($and_or_query, NULL, FALSE)
                 ->get()
-                ->num_rows();  
-          
-        $result = $this->db->select("*, e.id as id_etudiant")
+                ->num_rows();
+
+        $result = $this->db->select("*, e.id as id_etudiant,o.intitule as intitule_opt,f.intitule as intitule_fil")
                 ->from("etudiant e")
                 ->join('option_filiere o', 'o.id = e.id_option')
                 ->join('filiere f', 'f.id = o.id_filiere')
-                ->like("e.id_option",$option)
-                ->like("e.niveau_univ_actuel",$niveau)
-                ->like("o.id_filiere",$filiere)
-                ->where($adn_query, NULL, FALSE)             
-                ->limit($per_page,$start)
+                ->like("e.id_option", $option)
+                ->like("e.niveau_univ_actuel", $niveau)
+                ->like("o.id_filiere", $filiere)
+                ->where($and_or_query, NULL, FALSE)
+                ->limit($per_page, $start)
                 ->get()
-                ->result();                    
+                ->result();
         $data['query'] = $result;
-        $data['num'] = $num;                         
+        $data['num'] = $num;
         return $data;
     }
-    
+
     function liste_enseignants($data_filter) {
         /* Pour la requete d'affichage des enregistrements */
         $motif_recherche = $data_filter["motif_recherche"];
-        $cur_page        = $data_filter["page"];
-        $page = $cur_page--;
-        $per_page        = $data_filter["nbr"];
-        $start = $cur_page * $per_page;     
-        
-        $adn_query="
+        $cur_page = $data_filter["page"];
+        $per_page = $data_filter["nbr"];
+        $start = ($cur_page-1) * $per_page;
+
+        $and_or_query = "
             (
             e.nom like '%$motif_recherche%'  
             OR 
             e.prenom like '%$motif_recherche%'
             )";
+
         $num = $this->db->select("*")
                 ->from("enseignant e")
-                ->where($adn_query, NULL, FALSE)
+                ->where($and_or_query, NULL, FALSE)
                 ->get()
-                ->num_rows();  
-          
+                ->num_rows();
+
         $result = $this->db->select("*")
                 ->from("enseignant e")
-                ->where($adn_query, NULL, FALSE)             
-                ->limit($per_page,$start)
+                ->where($and_or_query, NULL, FALSE)
+                ->limit($per_page, $start)
                 ->get()
-                ->result();                    
+                ->result();
+
         $data['query'] = $result;
-        $data['num'] = $num;                         
+        $data['num'] = $num;
+        return $data;
+    }
+    function liste_entreprises($data_filter) {
+        /* Pour la requete d'affichage des enregistrements */
+         if ($data_filter["domaine"] === "-1") {
+            $data_filter["domaine"] = "";
+        }
+        $motif_recherche = $data_filter["motif_recherche"];
+        $id_domaine = $data_filter["domaine"];
+        $cur_page = $data_filter["page"];
+        $per_page = $data_filter["nbr"];
+        $start = ($cur_page-1) * $per_page;
+
+        $and_or_query = "(e.nom like '%$motif_recherche%')";  
+           
+        $num = $this->db->select("*,e.id as id_entreprise")
+                ->from("entreprise e")
+                ->join('domaine_entreprise d', 'd.id = e.id_domaine')
+                ->like('e.id_domaine',$id_domaine)
+                ->where($and_or_query, NULL, FALSE)
+                ->get()
+                ->num_rows();
+
+        $result = $this->db->select("*,e.id as id_entreprise")
+                ->from("entreprise e")
+                ->join('domaine_entreprise d', 'd.id = e.id_domaine')
+                ->like('e.id_domaine',$id_domaine)
+                ->where($and_or_query, NULL, FALSE)
+                ->limit($per_page, $start)
+                ->get()
+                ->result();
+
+        $data['query'] = $result;
+        $data['num'] = $num;
         return $data;
     }
 
@@ -128,12 +169,12 @@ class Admin_model extends CI_Model {
     }
 
     function all_entreprises() {
-        $query = $this->db->get('entreprise')->result(); // select * from etudiant
+        $query = $this->db->get('entreprise')->result(); // select * from entreprise
         return $query;
     }
 
     function all_enseignants() {
-        $query = $this->db->get('enseignant')->result(); // select * from etudiant
+        $query = $this->db->get('enseignant')->result(); // select * from enseignant
         return $query;
     }
 
@@ -160,7 +201,7 @@ class Admin_model extends CI_Model {
                 break;
 
             case 'entreprise' :
-                $msg_error = "Entreprise inexistant";
+                $msg_error = "Entreprise inexistante";
                 $result = $this->db->get_where('entreprise', array('id' => $id_utilisateur))->result();
                 if ($result) {
                     return $result[0];
@@ -172,7 +213,6 @@ class Admin_model extends CI_Model {
     }
 
     function modifier_utilisateur($data_utilisateur, $type_utilisateur) {
-
         $db_debug = $this->db->db_debug;
         $this->db->db_debug = FALSE;
         $this->db->where('id', $data_utilisateur['id']);
@@ -188,7 +228,6 @@ class Admin_model extends CI_Model {
         $res = $this->db->delete('compte', array('id' => $id_compte));
         $res['result'] = "ok";
         return $this->output->set_output(json_encode($res));
-        // return $this->output->set_output->(json_encode($res));
     }
 
     function verifier_email($email, $type_utilisateur) {
@@ -204,21 +243,17 @@ class Admin_model extends CI_Model {
     }
 
     function liste_demandes_stage() {
-        //       $query = $this->db->get('demande_stage')->result(); // select * from etudiant
-        $this->db->select('etudiant.apogee,etudiant.nom,etudiant.prenom,entreprise.nom as nom_entreprise,d.date_demande,d.date_reponse,d.validation_entreprise,d.validation_etudiant');
+        $this->db->select('etudiant.apogee, etudiant.nom, etudiant.prenom, entreprise.nom as nom_entreprise, d.date_demande, d.date_reponse, d.validation_entreprise, d.validation_etudiant');
         $this->db->from('demande_stage d', 'etudiant e', 'entreprise en');
         $this->db->join('etudiant', 'etudiant.id = d.id_etudiant');
         $this->db->join('entreprise', 'entreprise.id = d.id_entreprise');
         $query = $this->db->get()->result();
 
-
         return $query;
     }
 
     function liste_options() {
-        $query = $this->db->get('option_filiere')->result(); // select * from etudiant
+        $query = $this->db->get('option_filiere')->result(); // select * from option_filiere
         return $query;
     }
-
-// 
 }

@@ -1,0 +1,283 @@
+html, body, * {
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+/*************************************************** Body ***************************************************/
+
+body {
+	background: url("../img/bg (1).jpg") center center;
+	/*background: url("../img/bg (2).jpg") bottom center;*/
+	/*background: url("../img/bg (3).jpg") center center;*/
+	/*background: url("../img/bg (4).jpg") center center;*/
+	/*background: url("../img/bg (5).jpg") center center;*/
+	/*background: url("../img/bg (6).jpg") center center;*/
+	/*background: url("../img/bg (6).jpg") center center;*/
+	/*background: url("../img/bg (7).jpg") center center;*/
+	background-size: 100%;
+}
+
+#page {
+	display: table;
+	width: 100%;
+	min-width: 1000px;
+	height: 100%;
+	max-height: 100%;
+	min-height: 100%;
+}
+
+#main {
+	display: table-row;
+	width: 100%;
+	height: 100%;
+	/*background-color: rgba(255, 255, 255, 0.2);*/
+}
+
+/*************************************************** Left block ***************************************************/
+
+#block_left {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0 20px;
+}
+
+#block_left h1 {
+	font-size: 45px;
+	margin-bottom: 20px;
+	text-align: center;
+	color: #fff;
+}
+
+#block_left h2 {
+	font-size: 25px;
+	margin-bottom: 20px;
+	color: #89C402;
+	position: relative;
+	top: -31px;
+	left: 277px;
+}
+
+#block_left p {
+	color: #eee;
+	font-size: 20px;
+	margin: 30px 0;
+	border-left: 4px solid #eee;
+	padding-left: 7px;
+}
+
+/*************************************************** Right blocks ***************************************************/
+
+#blocks {
+	display: table-cell;
+	width: 685px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.block {
+	display: inline-block;
+	margin: 10px 20px 10px 0;
+}
+
+.block .title {
+	background-color: rgba(255, 255, 255, 0.5);
+	width: 320px;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 2px;
+	font-size: 22px;
+	color: #000;
+	border-radius: 15px 0 0 0;
+}
+
+.block .content {
+	background-color: rgba(255, 255, 255, 0.7);
+	width: 314px;
+	height: 154px;
+	padding: 3px;
+	border-radius: 0 0 35px 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.block .content p {
+	margin: 0;
+	padding: 0;
+}
+
+.block .content .login-button {
+	display: block;
+	position: absolute;
+	width: 64px;
+	height: 50px;
+
+	top: 55px;
+	right: 70px;
+	cursor: pointer;
+
+	font-size: 0;
+	background: url("../img/login.png") no-repeat center center;
+	opacity: 0.5;
+}
+
+.block .content .login-button:hover {
+	background: url("../img/login.png") no-repeat center center;
+	opacity: 1;
+}
+
+.block.admin .content {
+	background: rgba(255, 255, 255, 0.7) url("../img/administration.png") no-repeat bottom -20px left -22px;
+	background-size: 55% auto;
+}
+
+.block.encadrant .content {
+	background: rgba(255, 255, 255, 0.7) url("../img/encadrant.png") no-repeat bottom -18px left -10px;
+	background-size: 52% auto;
+}
+
+.block.etudiant .content {
+	background: rgba(255, 255, 255, 0.7) url("../img/etudiant.png") no-repeat bottom -17px left -17px;
+	background-size: 54% auto;
+}
+
+.block.entreprise .content {
+	background: rgba(255, 255, 255, 0.7) url("../img/entreprise.png") no-repeat bottom -10px left -10px;
+	background-size: 53% auto;
+}
+
+.box { 
+	float: left; 
+	position: absolute; 
+	background: #fff; /* #CCE1F4 */
+	width: 100%; 
+	height: 160px;
+	margin-left: -3px;
+	opacity: 0.8;
+}
+
+.box * {
+	opacity: 1;
+}
+
+.box .close { 
+	position: absolute;
+	cursor: pointer;
+	top: 3px;
+	right: 3px;
+	width: 16px;
+	height: 16px;
+	background: url("../img/close.png") no-repeat;
+}
+
+.box table {
+	width: 100%;
+	height: 100%;
+}
+
+.box table tr:first-child {
+	height: 65px;
+}
+
+.box table tr:first-child+tr {
+	height: 40px;
+}
+
+.box table tr:first-child td {
+	vertical-align: bottom;
+	padding-bottom: 5px;
+}
+
+.box table tr td {
+	vertical-align: top;
+}
+
+.box table tr td:first-child {
+	text-align: right;
+	width: 120px;
+}
+
+.box label {
+    font: 11px Tahoma;
+    font-weight: bold;
+    color: #173146;
+    line-height: 26px;
+}
+
+.box label.err {
+    color: #D2160B;
+}
+
+.box .forget-link {
+    font: 11px Tahoma;
+    color: #2A6BA7;
+    line-height: 26px;
+    float: left;
+    margin-left: 43px;
+    cursor: pointer;
+}
+
+.box .forget-link:hover {
+	text-decoration: underline;
+    color: #0092FF;
+}
+
+.box input[type="text"], .login input[type="password"]{
+    width: 150px;
+    height: 26px;
+    font: 12px Tahoma;
+    font-weight: bold;
+    border: 1px solid #9ABAC9;
+    border-radius: 3px;
+    background: #F7FAFB;
+    line-height: 26px;
+    padding: 0 5px;
+    color: #224868;
+}
+
+.box input[type="text"].err, .login input[type="password"].err {
+    border: 1px solid #D2160B;
+    background: #FFF8F8;
+    color: #224868;
+}
+
+button {
+	margin-right: 27px;
+    text-decoration: none;
+    cursor: pointer;
+    font: 11px Tahoma;
+    font-weight: bold;
+    border: 1px solid #375868;
+    border-radius: 3px;
+    background: #658EA3;
+    padding: 5px 10px;
+    color: #fff;
+    text-shadow: 1px 1px 1px #444;
+}
+
+button:hover{
+    border: 1px solid #375868;
+    background: #00A3D9;
+    color: #fff;
+    text-shadow: 1px 1px 1px #111;
+    box-shadow: 0 0 2px 1px #658EA3;
+}
+
+/*************************************************** footer ***************************************************/
+
+footer {
+	position: absolute;
+	bottom: 7px;
+	width: 100%;
+	text-align: center;
+	font: 11px Tahoma;
+	color: #111;
+}
+
+footer span {
+	color: #ddd;
+}

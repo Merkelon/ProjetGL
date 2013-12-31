@@ -2,7 +2,16 @@
     <br />
     <h1>Ajouter <span>Etudiant</span></h1>
     <br />
-    <div class="msg_res" ></div>
+   <div id="messages">
+        <div id="reponse_ok">
+            <p></p>
+            <a class="close_msg" title="Fermer"></a>
+        </div>
+        <div id="reponse_error">
+            <p></p>
+            <a class="close_msg" title="Fermer"></a>
+        </div>
+    </div>
     <div class="clear"></div>
     <?php echo form_open('admin/ajouter_utilisateur/etudiant'); ?>   
     <table class="formulaire" style="width: 360px;">
@@ -244,7 +253,7 @@
             function(data) {
                 var result = jQuery.parseJSON(data);
                 if (result["message"] == "0") {
-                    $("div.msg_res").fadeIn(300).text("").text("Etudiant ajouté avec succés");
+                     $("#reponse_ok").fadeIn(300).find("p").text("Etudiant ajouté avec succés");
                     $("table.formulaire input[type='text'],table.formulaire input[type='password']").val("");
                     $("div#msg_nom").fadeOut(300);
                     $("div#msg_prenom").fadeOut(300);
@@ -258,59 +267,23 @@
                 }
 
                 else if (result["message"] == "-1") {
-                    $("div.msg_res").fadeIn(300).text("").text("Une erreur s'est produite");
+                    $("#reponse_error").fadeIn(300).find("p").text("Une erreur s'est produite");
                 }
                 else {
-                    $("div#msg_nom").fadeIn(300).children("div.message").text("").text(result['nom']);
-                    $("div#msg_prenom").fadeIn(300).children("div.message").text("").text(result['prenom']);
-                    $("div#msg_cin ").fadeIn(300).children("div.message").text("").text(result['cin']);
-                    $("div#msg_cne ").fadeIn(300).children("div.message").text("").text(result['cne']);
-                    $("div#msg_email ").fadeIn(300).children("div.message").text("").text(result['email']);
-                    $("div#msg_apogee ").fadeIn(300).children("div.message").text("").text(result['apogee']);
-                    $("div#msg_ann_insc ").fadeIn(300).children("div.message").text("").text(result['ann_insc']);
-                    $("div#msg_password ").fadeIn(300).children("div.message").text("").text(result['password']);
-                    $("div#msg_password_conf ").fadeIn(300).children("div.message").text("").text(result['password_conf']);
+                    $("div#msg_nom").fadeIn(300).children("div.message").text(result['nom']);
+                    $("div#msg_prenom").fadeIn(300).children("div.message").text(result['prenom']);
+                    $("div#msg_cin ").fadeIn(300).children("div.message").text(result['cin']);
+                    $("div#msg_cne ").fadeIn(300).children("div.message").text(result['cne']);
+                    $("div#msg_email ").fadeIn(300).children("div.message").text(result['email']);
+                    $("div#msg_apogee ").fadeIn(300).children("div.message").text(result['apogee']);
+                    $("div#msg_ann_insc ").fadeIn(300).children("div.message").text(result['ann_insc']);
+                    $("div#msg_password ").fadeIn(300).children("div.message").text(result['password']);
+                    $("div#msg_password_conf ").fadeIn(300).children("div.message").text(result['password_conf']);
                 }
 
 
             });
-        });
-
-        $("input.nom,input.prenom").blur(function() {
-            element = $(this);
-            var text = element.val();
-            var exp = new RegExp("^[a-zA-Z]{4,}$");
-            if (!exp.test(text)) {
-                element.parent().children("span.msg_err").text("");
-                element.parent().children("span.msg_err").text("Que des chaines,min 4 caracteres");
-            }
-            else
-                element.parent().children("span.msg_err").text("");
-        })
-
-        $("input.cin").blur(function() {
-            element = $(this);
-            var text = element.val();
-            var exp = new RegExp("^[a-zA-Z]{1,2}[1-9][0-9]{5}$");
-            if (!exp.test(text)) {
-                element.parent().children("span.msg_err").text("");
-                element.parent().children("span.msg_err").text("commencant par des caracteres,max taille : 8");
-            }
-            else
-                element.parent().children("span.msg_err").text("");
-        })
-        $("input.cne").blur(function() {
-            element = $(this);
-            var text = element.val();
-            var exp = new RegExp("^[1-9][0-9]{9}$");
-            if (!exp.test(text)) {
-                element.parent().children("span.msg_err").text("");
-                element.parent().children("span.msg_err").text("que des chiffres,taille : 10");
-            }
-            else
-                element.parent().children("span.msg_err").text("");
-        })
-
+        });       
     });
     
     function remplire_niv_act(niv_act){

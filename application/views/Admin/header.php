@@ -9,7 +9,7 @@
                 <h4>Administrateur</h4>
                 <br />
                 <br />
-                <a href="#">Modifier Compte</a> | <?php echo anchor('logout', 'Deconnexion'); ?>
+                <a href="#">Modifier Compte</a> | <?php echo anchor('logout', 'Déconnexion'); ?>
             </div>
         </div>
         <div class="clear"></div>

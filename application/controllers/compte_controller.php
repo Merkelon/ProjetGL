@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -17,7 +18,6 @@ class Compte_controller extends CI_Controller {
     }
 
     public function verifier_auth() {
-
         if ($this->session->userdata('logged_in') == 1) {
             switch ($this->session->userdata('type')) {
                 case 'etudiant':
@@ -32,31 +32,40 @@ class Compte_controller extends CI_Controller {
     }
 
     function connexion() {
-
-        $this->verifier_auth();
-        
         $this->_username = $this->input->post('username');
         $this->_password = sha1($this->_salt . $this->input->post('password'));
 
         if ($this->form_validation->run("connexion") == FALSE) {
-            $this->load->view('Compte/index');
-        } 
-        else {
-            $type_compte = $this->compte_model->connexion();
-            switch ($type_compte){
-                 case 'etudiant':
-                    break;
-                case 'admin':
-                    redirect('admin');
-                    break;
+            // "-2" form non valide
+            $motifs = array("</p>", "<p>");
+            $res['username'] = str_replace($motifs, '', form_error('username'));
+            $res['password'] = str_replace($motifs, '', form_error('password'));
+            $res['msg'] = "-2";
+            return $this->output->set_output(json_encode($res));
+        } else {
+            $data_compte = array(
+                'username' => $this->_username,
+                'password' => $this->_password
+            );
+
+            $result = $this->compte_model->connexion($data_compte);
+
+            if ($result != FALSE) {
+                // "1" données valides
+                $res['msg'] = "1";
+                $res['type_utilisateur'] = $result;
+                return $this->output->set_output(json_encode($res));
+            } else {
+                // "-1" données non valides
+                $res['msg'] = "-1";
+                return $this->output->set_output(json_encode($res));
             }
-            $this->load->view('Compte/success', $data);
         }
     }
 
     function verifier_password() {
-        $this->db->where('username', $this->_username);
-        $this->db->where('password', $this->_password);
+        $this->db->like('username', $this->_username);
+        $this->db->like('password', $this->_password);
         $this->db->from('compte');
         $num = $this->db->count_all_results();
         if ($num == 0) {
@@ -68,7 +77,6 @@ class Compte_controller extends CI_Controller {
 
     function deconnexion() {
         $this->compte_model->deconnexion();
-        $this->index();
+        redirect(base_url());
     }
-
 }

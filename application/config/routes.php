@@ -1,4 +1,23 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+$route['default_controller'] = "compte_controller";
+$route['login'] = "compte_controller/connexion";
+$route['logout'] = "compte_controller/deconnexion";
+
+$route['admin'] = "admin_controller";
+$route['admin/ajouter_utilisateur/(:any)'] = "admin_controller/creer_compte/$1";
+$route['admin/modifier_utilisateur/(:any)/(:any)'] = "admin_controller/get_utilisateur/$1/$2";
+$route['admin/liste_etudiants'] = "admin_controller/all_etudiants";
+$route['admin/liste_entreprises'] = "admin_controller/all_entreprises";
+$route['admin/liste_enseignants'] = "admin_controller/all_enseignants";
+$route['admin/demandes_stage'] = "admin_controller/liste_demandes_stage";
+
+$route['etudiant'] = "etudiant_controller";
+
+$route['liste'] = "etudiant_controller" ;
+$route['javascripts'] = "assets/javascript";
+$route['404_override'] = '';
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -37,23 +56,6 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
-$route['default_controller'] = "compte_controller";
-$route['login'] = "compte_controller/connexion";
-$route['logout'] = "compte_controller/deconnexion";
-
-$route['admin'] = "admin_controller";
-$route['admin/ajouter_utilisateur/(:any)'] = "admin_controller/creer_compte/$1";
-$route['admin/modifier_utilisateur/(:any)/(:any)'] = "admin_controller/get_utilisateur/$1/$2";
-$route['admin/liste_etudiants'] = "admin_controller/all_etudiants";
-$route['admin/liste_entreprises'] = "admin_controller/all_entreprises";
-$route['admin/liste_enseignants'] = "admin_controller/all_enseignants";
-$route['admin/demandes_stage'] = "admin_controller/liste_demandes_stage";
-
-$route['liste'] = "etudiant_controller" ;
-$route['javascripts'] = "assets/javascript";
-$route['404_override'] = '';
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

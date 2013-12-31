@@ -1,96 +1,253 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
-        <title>ProjetGL</title>
+        <title>Intro - ProjetGL</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon" />
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css" />
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/jquery/jquery-1.8.3.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/jquery/jquery.pngFix.pack.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/login_page.css" />
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/jquery/jquery-1.10.2.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/jquery/jquery-ui.js" ></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/cufon/cufon-yui.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/cufon/comfortaa.cufonfonts.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/cufon/Segoe_UI_Light_300.font.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/cufon/Segoe_UI_Bold_1_400.font.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/cufon/myriad-pro.cufonfonts.js"></script>
+        <script type="text/javascript" >var base_url = "<?php echo base_url(); ?>";</script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/javascript/script.js"></script>
-        <script type="text/javascript">
-            function changeDiv(div) {
-                if (div == 'loginbox')
-                {
-                    $('#loginbox').slideDown(350);
-                    $('#forgotbox').fadeOut(0);
-                }
-                else if (div == 'forgotbox')
-                {
-                    $('#loginbox').fadeOut(0);
-                    $('#forgotbox').slideDown(350);
-                }
-            }
-        </script>
     </head>
-    <body id="login-bg">
-        <div id="login-holder">
-            <div id="logo-login">
-                <h1 style="text-align:center; line-height: 80px; font-size:45px; color:#003764;">Name<span style="color:#ABCC60;">App</span></h1>
-            </div>
-            <div></div>
-            <div class="clear"></div>
-            <div id="loginbox">
-                <div id="login-inner">
-                    <?php echo form_open('login'); ?>
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td colspan="2">
-                                <div id="messages" style="width: 700px;">
-                                    <?php echo validation_errors(); ?> 
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Username : </th>
-                            <td><input type="text" name="username" id="username" value="<?php echo set_value('username'); ?>" class="login-inp"/></td>
-                        </tr>
-                        <tr>
-                            <th>Mot de passe : </th>
-                            <td><input type="password" name="password" id="password" class="login-inp" /></td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td valign="top"><input type="checkbox" class="checkbox-size" name="login-check" id="login-check" /><label for="login-check">Se souvenir de moi ?</label></td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td><input class="submit-login" type="submit" /></td>
-                        </tr>
-                    </table>
-                    </form>
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="block_left">
+                    <h1>Plateforme des stages</h1>
+                    <h2>ENSA de Kénitra</h2>
+                    <p>Metuentes igitur idem latrones Lycaoniam magna parte campestrem cum seraedium, sdfz sda milite per omnia diffuso propinqua, magnis undique praesidiis conmunitam.</p>
+                    <p>Metuentes igitur idem latrones Lycaoniam magna parte campestrem cum seraedium, sdfz sda milite per omnia diffuso propinqua, magnis undique praesidiis conmunitam.</p>
                 </div>
-                <div class="clear"></div>
-                <a href="#" class="forgot-pwd" onClick="changeDiv('forgotbox')">Mot de passe perdu ?</a>
-            </div>
-            <div id="forgotbox" >
-                <div id="forgotbox-text" style="margin: 40px auto 10px auto">Envoyez un message pour réinitialiser votre mot de passe.</div>
-                <div id="login-inner" style="margin-top:10px">
-                    <form action="se-connecter" method="post">
-                        <table border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td colspan="2">
-                                    <div id="messages" style="width: 700px;">
-
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Email :</th>
-                                <td><input type="text" name="email2" id="email2" class="login-inp"/></td>
-                            </tr>
-                            <tr>
-                                <th> </th>
-                                <td><input type="submit" class="envoyer-login" /></td>
-                            </tr>
-                        </table>
-                    </form>
+                <div id="blocks">
+                    <div class="block admin">
+                        <div class="title">
+                            Espace Administrateur
+                        </div>
+                        <div class="content">
+                            <div class="login-button"></div>
+                            <div class="box login">
+                                <table>
+                                    <tr id="tr_1">
+                                        <td><label for="admin_username" class="username" >Nom d'utilisateur :</label></td>
+                                        <td><input type="text" id="admin_username" class="username" /></td>
+                                    </tr>
+                                    <tr id="tr_2">
+                                        <td><label for="admin_password" class="password" >Mot de passe :</label></td>
+                                        <td><input type="password" id="admin_password" class="password" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="forget-link">Mot de passe oublié ?</span>
+                                            <button id="cnx">Se connecter</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                            <div class="box forget">
+                                <table>
+                                    <tr>
+                                        <td><label for="admin_forget_email">Votre email :</label></td>
+                                        <td><input type="text" id="admin_forget_email" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button id="forget_admin">Récupérer</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block encadrant">
+                        <div class="title">
+                            Espace Encadrant
+                        </div>
+                        <div class="content">
+                            <div class="login-button"></div>
+                            <div class="box login">
+                                <table>
+                                    <tr>
+                                        <td><label for="encadrant_username" class="username">Nom d'utilisateur :</label></td>
+                                        <td><input type="text" id="encadrant_username" class="username" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="encadrant_password"  class="password" >Mot de passe :</label></td>
+                                        <td><input type="password" id="encadrant_password" class="password" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="forget-link">Mot de passe oublié ?</span>
+                                            <button id="cnx">Se connecter</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                            <div class="box forget">
+                                <table>
+                                    <tr>
+                                        <td><label for="encadrant_forget_email">Votre email :</label></td>
+                                        <td><input type="text" id="encadrant_forget_email" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button id="forget_encadrant">Récupérer</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block etudiant">
+                        <div class="title">
+                            Espace Etudiant
+                        </div>
+                        <div class="content">
+                            <div class="login-button"></div>
+                            <div class="box login">
+                                <table>
+                                    <tr>
+                                        <td><label for="etudiant_apogee" class="username">N° APOGEE :</label></td>
+                                        <td><input type="text" id="etudiant_apogee" class="username"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="etudiant_password" class="password">Mot de passe :</label></td>
+                                        <td><input type="password" id="etudiant_password" class="password"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="forget-link">Mot de passe oublié ?</span>
+                                            <button id="cnx">Se connecter</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                            <div class="box forget">
+                                <table>
+                                    <tr>
+                                        <td><label for="etudiant_forget_email">Votre email :</label></td>
+                                        <td><input type="text" id="etudiant_forget_email" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button id="forget_etudiant">Récupérer</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block entreprise">
+                        <div class="title">
+                            Espace Entreprise
+                        </div>
+                        <div class="content">
+                            <div class="login-button"></div>
+                            <div class="box login">
+                                <table>
+                                    <tr>
+                                        <td><label for="entreprise_username" class="username">Nom d'utilisateur :</label></td>
+                                        <td><input type="text" id="entreprise_username" class="username"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="entreprise_password" class="password">Mot de passe :</label></td>
+                                        <td><input type="password" id="entreprise_password" class="password"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="forget-link">Mot de passe oublié ?</span>
+                                            <button id="cnx">Se connecter</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                            <div class="box forget">
+                                <table>
+                                    <tr>
+                                        <td><label for="entreprise_forget_email">Votre email :</label></td>
+                                        <td><input type="text" id="entreprise_forget_email" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button id="forget_entreprise">Récupérer</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="close" title="Fermer"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="clear"></div>
-                <a href="#" class="back-login" onClick="changeDiv('loginbox')">Revenir à la connexion</a>
             </div>
+            <footer>
+                NameApp <span>&copy;</span> Ecole Nationale des Sciences Appliquées de Kénitra 2013 - 2014
+            </footer>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("button#cnx").click(function() {
+                    var ele = $(this).closest("table");
+                    var username = ele.find("input.username").val();
+                    var password = ele.find("input.password").val();
+
+                    $.post(base_url + "login", {
+                        username: username,
+                        password: password
+                    },
+                    function(data) {
+                        var result = jQuery.parseJSON(data);
+                        if (result["msg"] === "1") {
+                            if (result['type_utilisateur'] === 'admin')
+                                window.location.href = base_url + "admin";
+                            else if (result['type_utilisateur'] === 'etudiant')
+                                window.location.href = base_url + "etudiant";
+                            else if (result['type_utilisateur'] === 'entreprise')
+                                alert("redirect to entreprise");
+                            else if (result['type_utilisateur'] === 'encadrant')
+                                alert("redirect to encadrant");
+                        } else if (result["msg"] === "-1") {
+                            //données non valides
+                            $("table").effect("shake");
+                            ele.find("label.username").addClass("err");
+                            ele.find("label.password").addClass("err");
+                            ele.find("input.username").addClass("err");
+                            ele.find("input.password").addClass("err");
+                        } else if (result["msg"] === "-2") {
+                            //form non valide
+                            $("table").effect("shake");
+                            if (result['username']) {
+                                ele.find("label.username").addClass("err");
+                                ele.find("input.username").addClass("err");
+                            }
+                            else {
+                                ele.find("label.username").removeClass("err");
+                                ele.find("input.username").removeClass("err");
+                            }
+                            if (result['password']) {
+                                ele.find("label.password").addClass("err");
+                                ele.find("input.password").addClass("err");
+                            }
+                            else {
+                                ele.find("label.password").removeClass("err");
+                                ele.find("input.password").removeClass("err");
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
+

@@ -5,11 +5,14 @@ if (!defined('BASEPATH'))
 
 class admin_controller extends CI_Controller {
 
+    private $res = array();
+
     function __construct() {
         parent::__construct();
         $this->load->library(array('form_validation', 'session'));
         $this->load->helper(array('url', 'form', 'date'));
         $this->load->model("admin_model", "", TRUE);
+        $this->verifier_auth();
         $this->_salt = "123456789987654321";
         $this->_nivx = array();
         $this->_nivx['1cp'] = "1ére année CP ";
@@ -17,23 +20,38 @@ class admin_controller extends CI_Controller {
         $this->_nivx['1ci'] = "1ére année CI ";
         $this->_nivx['2ci'] = "2éme année CI ";
         $this->_nivx['3ci'] = "3éme année CI ";
+        $this->res['header'] = $this->load->view("Admin/header", '', TRUE);
     }
 
     function index() {
         $data['etudiants'] = $this->admin_model->all_etudiants();
-        $res['menuv_admin'] = "";
-        $res['content'] = $this->load->view("Admin/accueil", $data, TRUE);
-        $this->load->view("page", $res);
+        $this->res['menu_v'] = "";
+        $this->res['content'] = $this->load->view("Admin/accueil", $data, TRUE);
+        $this->load->view("page", $this->res);
     }
 
-    // test des fonction ajax :D
+    public function verifier_auth() {
+        if ($this->session->userdata('logged_in') == 1) {
+            switch ($this->session->userdata('type')) {
+                case 'etudiant':
+                    redirect('etudiant');
+                case 'admin':
+                    break;
+            }
+        }
+        else
+            redirect('');
+    }
+
+    // test des fonctions ajax :D
     function liste_etudiants() {
         $this->_page = $this->input->post('page'); // le numero de page
-        $this->_nbr = $this->input->post('nbr'); // nombre d'element par page
-        $this->_option = $this->input->post('option'); // le niveau choisit
-        $this->_filiere = $this->input->post('filiere'); // le niveau choisit
-        $this->_motif_recherche = $this->input->post('motif_recherche'); // le niveau choisit
-        $this->_niveau = $this->input->post('niveau'); // l'option choisit
+        $this->_nbr = $this->input->post('nbr'); // nombre d'elements par page
+        $this->_option = $this->input->post('option'); // l'option choisi
+        $this->_filiere = $this->input->post('filiere'); // la filière choisi
+        $this->_motif_recherche = $this->input->post('motif_recherche'); // le motif de recherche saisi
+        $this->_niveau = $this->input->post('niveau'); // le niveau choisit
+
         $data_filter = array(
             'page' => $this->_page,
             'nbr' => $this->_nbr,
@@ -41,62 +59,89 @@ class admin_controller extends CI_Controller {
             'filiere' => $this->_filiere,
             'motif_recherche' => $this->_motif_recherche,
             'niveau' => $this->_niveau);
+
         $resultat = $this->admin_model->liste_etudiants($data_filter);
-        
+
         $data['etudiants'] = $resultat['query'];
         $data['page'] = $this->_page;
         $data['nbr_etu'] = $resultat['num'];
         $data['nbr_pp'] = $this->_nbr;
-        
+
         $res['nbr_etu'] = $resultat['num'];
         $res['liste_etudiants'] = $this->load->view("Admin/load_data_etudiant", $data, TRUE);
-        
+
         return $this->output->set_output(json_encode($res));
     }
+
+    function liste_entreprises() {
+        $this->_page = $this->input->post('page'); // le numero de page
+        $this->_nbr = $this->input->post('nbr'); // nombre d'elements par page
+        $this->_motif_recherche = $this->input->post('motif_recherche'); // le motif de recherche saisi
+        $this->_domaine = $this->input->post('domaine'); // le domaine choisit
+
+        $data_filter = array(
+            'page' => $this->_page,
+            'nbr' => $this->_nbr,
+            'domaine' => $this->_domaine,
+            'motif_recherche' => $this->_motif_recherche);
+
+        $resultat = $this->admin_model->liste_entreprises($data_filter);
+
+        $data['entreprises'] = $resultat['query'];
+        $data['page'] = $this->_page;
+        $data['nbr_ent'] = $resultat['num'];
+        $data['nbr_pp'] = $this->_nbr;
+
+        $res['nbr_ent'] = $resultat['num'];
+        $res['liste_entreprises'] = $this->load->view("Admin/load_data_entreprise", $data, TRUE);
+
+        return $this->output->set_output(json_encode($res));
+    }
+
     function liste_enseignants() {
         $this->_page = $this->input->post('page'); // le numero de page
         $this->_nbr = $this->input->post('nbr'); // nombre d'element par page      
-        $this->_motif_recherche = $this->input->post('motif_recherche'); // le niveau choisit
+        $this->_motif_recherche = $this->input->post('motif_recherche'); // le motif choisit
         $data_filter = array(
             'page' => $this->_page,
             'nbr' => $this->_nbr,
             'motif_recherche' => $this->_motif_recherche);
         $resultat = $this->admin_model->liste_enseignants($data_filter);
-        
+
         $data['enseignants'] = $resultat['query'];
         $data['page'] = $this->_page;
-        $data['nbr_etu'] = $resultat['num'];
+        $data['nbr_ens'] = $resultat['num'];
         $data['nbr_pp'] = $this->_nbr;
-        
-        $res['nbr_etu'] = $resultat['num'];
-        $res['liste_etudiants'] = $this->load->view("Admin/load_data_enseignant", $data, TRUE);
-        
+
+        $res['nbr_ens'] = $resultat['num'];
+        $res['liste_enseignants'] = $this->load->view("Admin/load_data_enseignant", $data, TRUE);
+
         return $this->output->set_output(json_encode($res));
     }
 
+    // admin_controller/all_XXX => admin/liste_XXXX (routes)
     function all_etudiants() {
-        $data['etudiants'] = $this->admin_model->all_etudiants();
+        //rassembler les informations à envoyer à la vue liste_
         $data['options'] = $this->admin_model->all_options();
         $data['filieres'] = $this->admin_model->all_filieres();
         $data['niveaux'] = $this->admin_model->all_niveaux();
         $data['nivx'] = $this->_nivx;
-        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
-        $res['content'] = $this->load->view("Admin/liste_etudiants", $data, TRUE);
-        $this->load->view("page", $res);
+        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
+        $this->res['content'] = $this->load->view("Admin/liste_etudiants", $data, TRUE);
+        $this->load->view("page", $this->res);
     }
 
     function all_entreprises() {
-        $data['entreprises'] = $this->admin_model->all_entreprises();
-        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
-        $res['content'] = $this->load->view("Admin/liste_entreprises", $data, TRUE);
-        $this->load->view("page", $res);
+        $data['domaines'] = $this->admin_model->all_domaines();
+        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
+        $this->res['content'] = $this->load->view("Admin/liste_entreprises", $data, TRUE);
+        $this->load->view("page", $this->res);
     }
 
     function all_enseignants() {
-        $data['enseignants'] = $this->admin_model->all_enseignants();
-        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
-        $res['content'] = $this->load->view("Admin/liste_enseignants", $data, TRUE);
-        $this->load->view("page", $res);
+        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
+        $this->res['content'] = $this->load->view("Admin/liste_enseignants", "", TRUE);
+        $this->load->view("page", $this->res);
     }
 
     public function creer_compte($type_utilisateur = '') {
@@ -132,9 +177,9 @@ class admin_controller extends CI_Controller {
                         return $this->output->set_output(json_encode($res));
                     } else {
                         $data['options'] = $this->admin_model->liste_options();
-                        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
-                        $res['content'] = $this->load->view("Admin/form_creer_etudiant", $data, TRUE);
-                        $this->load->view("page", $res);
+                        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
+                        $this->res['content'] = $this->load->view("Admin/form_creer_etudiant", $data, TRUE);
+                        $this->load->view("page", $this->res);
                     }
 //                        $this->load->view('Admin/form_creer_etudiant');
 //                    return $this->output->set_output(json_encode($res));
@@ -197,13 +242,13 @@ class admin_controller extends CI_Controller {
                         $res['password'] = str_replace($motifs, '', form_error('password'));
                         $res['password_conf'] = str_replace($motifs, '', form_error('password_conf'));
                         return $this->output->set_output(json_encode($res));
+                    } else {
+                        $data['domaines'] = $this->admin_model->all_domaines();
+                        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
+                        $this->res['content'] = $this->load->view("Admin/form_creer_entreprise", $data, TRUE);
+                        $this->load->view("page", $this->res);
                     }
-                    else
-                        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
-                    $res['content'] = $this->load->view("Admin/form_creer_entreprise", "", TRUE);
-                    $this->load->view("page", $res);
-                }
-                else {
+                } else {
                     $datestring = "%Y-%m-%d %H:%i:%s";
                     $time = time();
                     $madate = mdate($datestring, $time);
@@ -249,10 +294,11 @@ class admin_controller extends CI_Controller {
                         $res['password'] = str_replace($motifs, '', form_error('password'));
                         $res['password_conf'] = str_replace($motifs, '', form_error('password_conf'));
                         return $this->output->set_output(json_encode($res));
+                    } else {
+                        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
+                        $this->res['content'] = $this->load->view("Admin/form_creer_enseignant", "", TRUE);
+                        $this->load->view("page", $this->res);
                     }
-                    $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
-                    $res['content'] = $this->load->view("Admin/form_creer_enseignant", "", TRUE);
-                    $this->load->view("page", $res);
                 } else {
                     $datestring = "%Y-%m-%d %H:%i:%s";
                     $time = time();
@@ -286,20 +332,21 @@ class admin_controller extends CI_Controller {
 //        $result['compte_utilisateur']=$result[1];
         switch ($type_utilisateur) {
             case 'etudiant' :
-                $result['options'] = $this->admin_model->liste_options();
-                $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
-                $res['content'] = $this->load->view("Admin/form_modifier_etudiant", $result, TRUE);
-                $this->load->view("page", $res);
+                $result['options'] = $this->admin_model->all_options();
+                $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
+                $this->res['content'] = $this->load->view("Admin/form_modifier_etudiant", $result, TRUE);
+                $this->load->view("page", $this->res);
                 break;
             case 'entreprise' :
-                $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
-                $res['content'] = $this->load->view("Admin/form_modifier_entreprise", $result, TRUE);
-                $this->load->view("page", $res);
+                $result['domaines'] = $this->admin_model->all_domaines();
+                $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_entreprise", "", TRUE);
+                $this->res['content'] = $this->load->view("Admin/form_modifier_entreprise", $result, TRUE);
+                $this->load->view("page", $this->res);
                 break;
             case 'enseignant' :
-                $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
-                $res['content'] = $this->load->view("Admin/form_modifier_enseignant", $result, TRUE);
-                $this->load->view("page", $res);
+                $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_enseignant", "", TRUE);
+                $this->res['content'] = $this->load->view("Admin/form_modifier_enseignant", $result, TRUE);
+                $this->load->view("page", $this->res);
                 break;
         }
     }
@@ -361,7 +408,7 @@ class admin_controller extends CI_Controller {
                 break;
             case 'entreprise' :
                 $this->_nom = $this->input->post('nom');
-                $this->_domaine = $this->input->post('domaine');
+                $this->_id_domaine = $this->input->post('domaine');
                 $this->_email = $this->input->post('email');
                 $this->_tel = $this->input->post('tel');
                 $this->_fax = $this->input->post('fax');
@@ -373,7 +420,6 @@ class admin_controller extends CI_Controller {
                     if ($this->_ajax == "ok") {
                         $motifs = array("</p>", "<p>");
                         $res['nom'] = str_replace($motifs, '', form_error('nom'));
-                        $res['domaine'] = str_replace($motifs, '', form_error('domaine'));
                         $res['email'] = str_replace($motifs, '', form_error('email'));
                         $res['tel'] = str_replace($motifs, '', form_error('tel'));
                         $res['fax'] = str_replace($motifs, '', form_error('fax'));
@@ -386,7 +432,7 @@ class admin_controller extends CI_Controller {
                     $data_utilisateur = array(
                         'id' => $this->_id,
                         'nom' => $this->_nom,
-                        'domaine' => $this->_domaine,
+                        'id_domaine' => $this->_id_domaine,
                         'tel' => $this->_tel,
                         'fax' => $this->_fax,
                         'ville' => $this->_ville,
@@ -467,10 +513,9 @@ class admin_controller extends CI_Controller {
     }
 
     function liste_demandes_stage() {
-        $data['demandes'] = $this->admin_model->liste_demandes_stage();
-        $res['menuv_admin'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
-        $res['content'] = $this->load->view("Admin/liste_demandes_stage", $data, TRUE);
-        $this->load->view("page", $res);
+        $this->res['menu_v'] = $this->load->view("Admin/menuv_admin_etudiant", "", TRUE);
+        $this->res['content'] = $this->load->view("Admin/liste_demandes_stage", $data, TRUE);
+        $this->load->view("page", $this->res);
     }
 
 }

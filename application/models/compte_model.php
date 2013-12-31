@@ -9,23 +9,37 @@ class Compte_model extends CI_Model {
         $this->load->library('session');
     }
 
-    public function connexion() {
-        $resultat = $this->db->select('id, type')
-                ->where('username', $this->input->post('username'))
-                ->get('compte')
-                ->row(); //recuperer l'id de l'utilisateur
-        $update_data = array('logged_in' => 1);
-        $this->db->where('id',$resultat->id);
-        $this->db->update('compte', $update_data); // 
-        $data = array(
-            'id' => $resultat->id,
-            'type' => $resultat->type,
-            'username' => $this->input->post('username'),
-            'logged_in' => 1
-        );
-
-        $this->session->set_userdata($data);
-        return $resultat->type;
+    public function connexion($data_compte) {
+        $count = $this->db->select("id, type")
+                ->from('compte')
+                ->where('username', $data_compte['username'])
+                ->where('password', $data_compte['password'])
+                ->get()
+                ->num_rows();
+        
+        if ($count > 0) {
+            $resultat = $this->db->select('id, type')
+                    ->where('username', $this->input->post('username'))
+                    ->get('compte')
+                    ->row();
+            
+            $update_data = array('logged_in' => 1);
+            $this->db->where('id', $resultat->id)
+                     ->update('compte', $update_data);
+            
+            $data = array(
+                'id' => $resultat->id,
+                'type' => $resultat->type,
+                'username' => $this->input->post('username'),
+                'logged_in' => 1
+            );
+            
+            $this->session->set_userdata($data);
+            
+            return $resultat->type;
+        }
+        else
+            return FALSE;
     }
 
     public function deconnexion() {
@@ -34,9 +48,4 @@ class Compte_model extends CI_Model {
         $this->db->update('compte', $update_data);
         $this->session->sess_destroy();
     }
-
-    /*
-     * To change this template, choose Tools | Templates
-     * and open the template in the editor.
-     */
 }
